@@ -1,0 +1,45 @@
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - 8000:80
+    volumes:
+      - ./docker/web/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/html
+    depends_on:
+      - app # nginx がphpを実行するので依存しているということになる.
+  app:
+    build: ./docker/php
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf
+    environment:
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
+      - QUEUE_DRIVER=redis
+      - REDIS_HOST=redis
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: sample
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+  redis:
+    image: redis:5.0-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mysql-data:
+  redis-data:

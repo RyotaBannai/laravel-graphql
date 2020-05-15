@@ -51,7 +51,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This is a path that points to where your GraphQL schema is located
-    | relative to the app path. You should define your entire GraphQL
+    | relative to the my-laravel-app path. You should define your entire GraphQL
     | schema in this file (additional files may be imported).
     |
     */

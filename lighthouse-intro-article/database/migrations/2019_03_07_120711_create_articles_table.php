@@ -18,7 +18,7 @@ class CreateArticlesTable extends Migration
             $table->string('title');
             $table->longText('body');
             $table->unsignedInteger('author_id');
-            $table->foreign('author_id')->references('id')->on('users');
+            //  $table->foreign('author_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
