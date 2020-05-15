@@ -8,7 +8,7 @@ use App\Models\Image;
 
 class UsersTableSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $userDB = DB::table('users');
         $postDB = DB::table('posts');

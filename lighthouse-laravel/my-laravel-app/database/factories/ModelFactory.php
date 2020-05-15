@@ -77,7 +77,7 @@ $factory->define(Comment::class, function (Faker $faker) {
                 return 'App\Models\Comment';
             }
         },
-        'body' => $faker->realText(20),
+        'reply' => $faker->realText(20),
         'created_at' => $faker->dateTime,
         'updated_at' => $faker->dateTime,
         'deleted_at' => function() use ($faker){
