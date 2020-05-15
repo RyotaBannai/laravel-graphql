@@ -7,4 +7,35 @@
 - `cd my-laravel-app && php artisan migrate --seed` to migrate all required tables and run seed.
 -  Access to `localhost:8000/graphql-playground` to do some queries. 
 -  Or use Postman to do GraphQL, which might be faster.
+## Notes
+- Just like in Eloquent, we express the relationship between our types using the `@belongsTo` and `@hasMany` directives
+- `Renaming Relations`: 
+```graphql
+type Post {
+  author: User! @belongsTo(relation: "user")
+}
+```
+- A `schema`: defines the capabilities of a GraphQL server. Much like a database schema, it describes the structure and the types your API can return.
+- A `trailing exclamation mark `is used to denote a field that uses a `Non‐Null` type like this: `name: String!`.
+- `Input`: When `non-null` is applied to the type of an input, like an argument, input object field or a variable, it makes that `input required`. For example:
+```graphql
+type Query {
+  getUser(id: ID!, status: Status): User
+}
+```
+- the `id argument` is non-null. because the status argument is `nullable`, it's `optional` and can be omitted. This applies to variables as well:
+```graphql
+query MyQuery ($foo: ID!) {
+    getUser(id: $foo)
+ }
+```
 
+|Argument|Variable|Valid?|
+|:---:|:---:|:---:|
+| String   | String   |   ✅   |
+| String   | String!  |   ✅   |
+| String!  | String   |   ❌   |
+| String!  | String!  |   ✅   |
+- [Ref](https://stackoverflow.com/questions/50684231/what-is-an-exclamation-point-in-graphql)
+### The Root Types
+- 
