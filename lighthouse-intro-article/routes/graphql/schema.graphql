@@ -12,8 +12,8 @@ type Query {
 
 type Mutation @group(middleware: ["auth:api"]) {
     createArticle(title: String!, body: String!): Article
-        @create(model: "Article")
-        @inject(context: "user.id", name: "author_id")
+    @create(model: "Article")
+    @inject(context: "user.id", name: "author_id")
 }
 
 
