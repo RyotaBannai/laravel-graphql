@@ -37,5 +37,26 @@ query MyQuery ($foo: ID!) {
 | String!  | String   |   ❌   |
 | String!  | String!  |   ✅   |
 - [Ref](https://stackoverflow.com/questions/50684231/what-is-an-exclamation-point-in-graphql)
-### The Root Types
-- 
+### The **Root** Types
+- `Query`: Every GraphQL schema **must** have a `Query type` which contains `the queries your API offers`. Think of `queries as REST resources` which can take arguments and return a fixed result.
+- `Mutation` In contrast to the Query type, the fields of the `Mutation type` are `allowed to change data on the server`. In other words, you can insert, update, delete db data with `Mutation type`.
+```graphql
+type Mutation {
+  createUser(name: String!, email: String!, password: String!): User
+  updateUser(id: ID, email: String, password: String): User
+  deleteUser(id: ID): User
+}
+```
+- `Subscription`: Rather than providing a single response, the fields of the Subscription type return a stream of responses, with real-time updates. 
+```graphql
+type Subscription {
+  newUser: User
+}
+```
+### **Types**
+- `Object Type` are closely related to `Eloquent models`.
+- Scalar for type 
+```graphql
+scalar Email @scalar(class: "MLL\\GraphQLScalars\\Email")
+```
+- By using Enum... Queries now return `meaningful names instead of magic numbers`. (If the internal value of the enum is the same as the field name, @enum can be omitted)
