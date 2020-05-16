@@ -4,17 +4,8 @@
 #import query.graphql
 #import mutation.graphql
 #import user.graphql
+#import post.graphql
 #import scalars.graphql
-
-type Post {
-    id: ID!
-    title: String!
-    content: String!
-    category: String!
-    #author: User! @belongsTo
-    user: User! @belongsTo(relation: "author")  # accepts different method name
-    comments: [Comment!]! @morphMany
-}
 
 type Comment {
     id: ID!

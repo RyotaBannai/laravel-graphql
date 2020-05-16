@@ -1,12 +1,4 @@
 type Query {
-    users: [User!]! @paginate(defaultCount: 10)
-    user(id: ID @eq): User @find
-    posts: [Post!]! @all
-    posts2: [Post!]! @paginate
-    post(id: Int! @eq): Post @find
-    postDense(
-        title: String! @where(operator: "%LIKE%")
-    ): [Post!]! @all
     hello: String!
     # hello: String @upperCase
     # greet(name: String!): String

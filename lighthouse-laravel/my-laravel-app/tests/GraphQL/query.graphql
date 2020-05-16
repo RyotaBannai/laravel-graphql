@@ -1,28 +1,42 @@
-query {
-#    posts2(first: 10){
-#    posts2(first: 10, page:2){
-#        ...PostPagenationPragment
-#        ...PostFragment
-#    }
-    users(first: 5){
-        ...UserPagenationPragment
-        ...UserFragment
-    }
-}
+mutation{
+    updateUser(
 
-fragment UserFragment on UserPaginator {
-    data{
+            id: 1,
+            name: "Ryota Bannai!"
+
+    )
+    {
         id
         name
     }
 }
 
-fragment UserPagenationPragment on UserPaginator {
-    paginatorInfo{
-        currentPage
-        lastPage
-    }
-}
+#query {
+##    posts2(first: 10){
+#    posts2(first: 10, page:2){
+#        ...PostPagenationPragment
+#        ...PostFragment
+#    }
+##    users(first: 5){
+##        ...UserPagenationPragment
+##        ...UserFragment
+##    }
+#}
+
+
+#fragment UserFragment on UserPaginator {
+#    data{
+#        id
+#        name
+#    }
+#}
+#
+#fragment UserPagenationPragment on UserPaginator {
+#    paginatorInfo{
+#        currentPage
+#        lastPage
+#    }
+#}
 
 
 #fragment PostFragment on PostPaginator {
@@ -50,15 +64,3 @@ fragment UserPagenationPragment on UserPaginator {
 #}
 # come back later
 
-#mutation{
-#    createUser(
-#        input:{
-#            name: "ryota13",
-#            email: "ryota13@gmail.com",
-#            password: "testaccount",
-#        }
-#    )
-#    {
-#        id
-#    }
-#}

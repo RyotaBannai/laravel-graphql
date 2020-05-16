@@ -40,6 +40,7 @@ query MyQuery ($foo: ID!) {
 ### The **Root** Types
 - `Query`: Every GraphQL schema **must** have a `Query type` which contains `the queries your API offers`. Think of `queries as REST resources` which can take arguments and return a fixed result.
 - `Mutation` In contrast to the Query type, the fields of the `Mutation type` are `allowed to change data on the server`. In other words, you can insert, update, delete db data with `Mutation type`. <<`You don't need to define create, update methods in Eloquent model to do this. ALl completed by GraphQL.`>>
+- When you use `input` type, you do need to **wrap variables** with `input{}`. If don't then put them in parentheses `methodName([here])`
 ```graphql
 type Mutation {
   createUser(name: String!, email: String!, password: String!): User
@@ -163,3 +164,21 @@ type PostPaginator {
 - As you add more and more types to your schema, it can grow quite large. Learn how to split your schema across multiple files and organise your types.
 - Imports always begin on a separate line with `#import`, followed by `the relative path` to the imported file. The contents of other.graphql are pasted in the final schema.
 - The orders of importing files `won't cause any dependency problems` as long as you import all needed files!
+- glob is like this. 
+```graphql
+#import post/*.graphql
+```
+- Now you want to add a few queries to actually fetch posts. You could add them to the `main Query type` in your main file, but `that spreads the definition apart`:(, and `could also grow quite large over time` :(. Another way would be to `extend the Query type` and `colocate the type definition` with its Queries in other.graphql, something like below.
+```graphql
+type Post {
+  title: String
+  author: User @belongsTo
+}
+
+extend type Query {
+  posts: [Post!]! @paginate
+}
+```
+- Apart from object types type, you can also extend `input, interface and enum types`. Lighthouse will merge the fields (or values) with the original definition and **always produce a single type in the final schema**.
+### Built-in directives
+- Adding `Query Constraints`: @create, @update, @upsert, @delete
