@@ -72,4 +72,18 @@ class User extends Authenticatable
         $_year = Carbon::parse("first day of January $year");
         return $query->where('created_at', '>=', $_year);
     }
+
+//    public function createUser(
+//        $name,
+//        $email,
+//        $password,
+//        $active=1): void
+//    {
+//        $this->create([
+//            'name' => $name,
+//            'email' => $email,
+//            'password' => $password,
+//            'active' => $active
+//        ]);
+//    }
 }
