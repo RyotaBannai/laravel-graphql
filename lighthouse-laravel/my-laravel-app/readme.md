@@ -200,3 +200,75 @@ type Image {
 ## Nested Mutations
 - `Return Types Required`
 - `Partial Failure`: By default, all mutations are wrapped in a database transaction. If any of the nested operations fail, the whole mutation is aborted and no changes are written to the database.
+
+### Complex Where Conditions
+- Lighthouse automatically generates definitions for an `Enum type` and an `Input type` that are restricted to the defined columns, so `you do not have to specify them by hand`. The `blank type` named `_` will be changed to the actual type. [Check out for the details](https://lighthouse-php.com/master/eloquent/complex-where-conditions.html#usage)
+- AND OR conditionals.
+```graphql
+query {
+    postDense2(where: {
+            AND:[
+                {column: CATEGORY, operator: EQ, value: "Politics"}
+                {
+                    OR : [
+                        {column: USER_ID, operator: EQ, value: 5}
+                        {column: TITLE, operator: EQ, value: "White Rabbit as he."}
+                    ]
+                }
+            ]
+        })
+}
+```
+- If you want to retrieve the value with some columns as null use `IS_NULL`
+```graphql
+{
+  people(
+    where: {
+      AND: [
+        { column: HAIRCOLOUR, operator: IS_NULL }
+        { column: EYES, operator: IN, value: ["blue", "aqua", "turquoise"] }
+      ]
+    }
+  ) {
+    name
+  }
+}
+```
+- Using `null` as argument value does not have any effect on the query. 
+```graphql
+{
+  people(where: null) {
+    name
+  }
+}
+```
+- `Operators`
+```graphql
+enum Operator {
+    EQ @enum(value: "=")
+    NEQ @enum(value: "!=")
+    GT @enum(value: ">")
+    GTE @enum(value: ">=")
+    LT @enum(value: "<")
+    LTE @enum(value: "<=")
+    LIKE @enum(value: "LIKE")
+    NOT_LIKE @enum(value: "NOT_LIKE")
+}
+```
+
+- `@whereHasConditions`: This directive works very similar to `@whereConditions`, except that the conditions are applied to `a relation sub query`:
+```graphql
+"""
+  The Eloquent relationship that the conditions will be applied to.
+
+  This argument can be omitted if the argument name follows the naming
+  convention `has{$RELATION}`. For example, if the Eloquent relationship
+  is named `posts`, the argument name must be `hasPosts`.
+  """
+
+type Query {
+  people(
+    `hasRole`: _ @whereHasConditions(columns: ["name", "access_level"])
+  ): [Person!]! @all
+}
+```

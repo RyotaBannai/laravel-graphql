@@ -1,0 +1,14 @@
+extend type Query {
+    postDense(
+        title: String! @where(operator: LIKE)
+    ): [Post!]! @all
+
+    postDense2(
+        where: _ @whereConditions(columns: ["title", "content", "category", "user_id"])
+    ): [Post!]! @all
+
+    postDense3(
+        hasComments: _ @whereHasConditions(columns: ["target_type", "replay", "deleted_at"])
+    ): [Post!]! @all
+}
+

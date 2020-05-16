@@ -5,12 +5,14 @@
 #import mutation.graphql
 #import user.graphql
 #import post.graphql
+#import postDense.graphql
 #import scalars.graphql
 
 type Comment {
     id: ID!
     reply: String!
     post: Post!
+    deleted_at: DateTime
 }
 
 type Group {

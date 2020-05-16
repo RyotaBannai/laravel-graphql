@@ -1,5 +1,6 @@
 type Post {
     id: ID!
+    user_id: ID!
     title: String!
     content: String!
     category: String!
@@ -39,9 +40,6 @@ extend type Query {
     posts: [Post!]! @all
     posts2: [Post!]! @paginate
     post(id: Int! @eq): Post @find
-    postDense(
-        title: String! @where(operator: "%LIKE%")
-    ): [Post!]! @all
 }
 
 extend type Mutation {

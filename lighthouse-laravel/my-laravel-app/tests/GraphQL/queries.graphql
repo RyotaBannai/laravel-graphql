@@ -1,4 +1,4 @@
-mutation{
+#mutation{
 #    updateUser(
 #        id: 1,
 #        name: "Ryota Bannai!"
@@ -7,25 +7,66 @@ mutation{
 #        id
 #        name
 #    }
-    createPost(input: { title: "My new Post", content:"New Post!!", author: { connect: 1 } }) {
-        id
-        user {
-            name
-        }
-    }
-}
 
-#query {
-##    posts2(first: 10){
+#    createPost(input: { title: "My new Post", content:"New Post!!", author: { connect: 1 } }) {
+#        id
+#        user {
+#            name
+#        }
+#    }
+#}
+
+query {
+#    posts2(first: 10){
 #    posts2(first: 10, page:2){
 #        ...PostPagenationPragment
 #        ...PostFragment
 #    }
-##    users(first: 5){
-##        ...UserPagenationPragment
-##        ...UserFragment
-##    }
-#}
+#    users(first: 5){
+#        ...UserPagenationPragment
+#        ...UserFragment
+#    }
+
+#    postDense2(where: { column: CATEGORY, operator: EQ, value: "U.S."}) {
+#        id
+#        title
+#        content
+#    }
+#    postDense2(where: {
+#        AND:[
+#            {column: CATEGORY, operator: EQ, value: "Politics"}
+#            {
+#                OR : [
+#                    {column: TITLE, operator: LIKE, value: "%White%"}
+#                ]
+#            }
+#        ]
+#    })
+
+#    postDense(title: "%Alice%")
+#    {
+#        id
+#        title
+#        content
+#    }
+
+    postDense3(hasComments: {
+        AND:[
+            {column: TARGET_TYPE , operator: EQ, value: "App\\Models\\Post"}
+            {column: DELETED_AT , operator: IS_NOT_NULL } # IS_NULL works as well.
+        ]
+    })
+    {
+        id
+        title
+        content
+        comments {
+            reply
+            deleted_at
+        }
+    }
+}
+
 
 
 #fragment UserFragment on UserPaginator {
