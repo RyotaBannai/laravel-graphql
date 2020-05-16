@@ -39,7 +39,7 @@ query MyQuery ($foo: ID!) {
 - [Ref](https://stackoverflow.com/questions/50684231/what-is-an-exclamation-point-in-graphql)
 ### The **Root** Types
 - `Query`: Every GraphQL schema **must** have a `Query type` which contains `the queries your API offers`. Think of `queries as REST resources` which can take arguments and return a fixed result.
-- `Mutation` In contrast to the Query type, the fields of the `Mutation type` are `allowed to change data on the server`. In other words, you can insert, update, delete db data with `Mutation type`.
+- `Mutation` In contrast to the Query type, the fields of the `Mutation type` are `allowed to change data on the server`. In other words, you can insert, update, delete db data with `Mutation type`. <<`You don't need to define create, update methods in Eloquent model to do this. ALl completed by GraphQL.`>>
 ```graphql
 type Mutation {
   createUser(name: String!, email: String!, password: String!): User
@@ -55,8 +55,17 @@ type Subscription {
 ```
 ### **Types**
 - `Object Type` are closely related to `Eloquent models`.
-- Scalar for type 
+- Scalar for type. You can also use third-party scalars like `Email`.
 ```graphql
 scalar Email @scalar(class: "MLL\\GraphQLScalars\\Email")
 ```
+```shell script
+composer require mll-lab/graphql-php-scalars
+```
+- The above type spit an error if input is invalid email type. So no need validation on Laravel itself. 
+```shell script
+"message": "Field \"createUser\" argument \"input\" requires type Email!, found \"ryota\"; The given string \"ryota\" is not a valid Email.",
+```
 - By using Enum... Queries now return `meaningful names instead of magic numbers`. (If the internal value of the enum is the same as the field name, @enum can be omitted)
+- The GraphQL `interface`: It defines `a set of common fields` that all implementing types must also provide. A common use-case for interfaces with a Laravel project would be `polymorphic relationships`. (an abstract type)
+- You can also provide a custom type resolver. Run `php artisan lighthouse:interface <Interface name>` to create a custom interface class
