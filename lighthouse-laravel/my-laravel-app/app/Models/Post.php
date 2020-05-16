@@ -12,6 +12,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Post extends Model
 {
+    protected $fillable = [
+        'title',
+        'content',
+    ];
+
     public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'target');

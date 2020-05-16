@@ -8,13 +8,6 @@
 -  Access to `localhost:8000/graphql-playground` to do some queries. 
 -  Or use Postman to do GraphQL, which might be faster.
 ## Notes
-- Just like in Eloquent, we express the relationship between our types using the `@belongsTo` and `@hasMany` directives
-- `Renaming Relations`: 
-```graphql
-type Post {
-  author: User! @belongsTo(relation: "user")
-}
-```
 - A `schema`: defines the capabilities of a GraphQL server. Much like a database schema, it describes the structure and the types your API can return.
 - A `trailing exclamation mark `is used to denote a field that uses a `Non‐Null` type like this: `name: String!`.
 - `Input`: When `non-null` is applied to the type of an input, like an argument, input object field or a variable, it makes that `input required`. For example:
@@ -182,3 +175,28 @@ extend type Query {
 - Apart from object types type, you can also extend `input, interface and enum types`. Lighthouse will merge the fields (or values) with the original definition and **always produce a single type in the final schema**.
 ### Built-in directives
 - Adding `Query Constraints`: @create, @update, @upsert, @delete
+
+## Eloquent Relationships
+- Just like in Eloquent, we express the relationship between our types using the `@belongsTo` and `@hasMany` directives
+- `Renaming Relations`: 
+```graphql
+type Post {
+  author: User! @belongsTo(relation: "user")
+}
+```
+### Avoiding the N+1 performance problem
+- When you decorate your relationship fields with `Lighthouse's built-in relationship directives`(such as `@hasMany`, `@belongsTo`), queries are automatically combined through a technique called `batch loading`. That means **you get fewer database requests and better performance without doing much work**. This is why you should decorate your relationship.
+### Morph relation
+- Depending on the rules of your application, you might require the relationship to be there in some cases, while allowing it to be `absent` in others. -> use `union`
+```graphql
+union Imageable = Post | User
+type Image {
+  id: ID!
+  url: String!
+  imageable: Imageable! @morphTo
+}
+```
+
+## Nested Mutations
+- `Return Types Required`
+- `Partial Failure`: By default, all mutations are wrapped in a database transaction. If any of the nested operations fail, the whole mutation is aborted and no changes are written to the database.

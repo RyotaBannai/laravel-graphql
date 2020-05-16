@@ -1,13 +1,17 @@
 mutation{
-    updateUser(
-
-            id: 1,
-            name: "Ryota Bannai!"
-
-    )
-    {
+#    updateUser(
+#        id: 1,
+#        name: "Ryota Bannai!"
+#    )
+#    {
+#        id
+#        name
+#    }
+    createPost(input: { title: "My new Post", content:"New Post!!", author: { connect: 1 } }) {
         id
-        name
+        user {
+            name
+        }
     }
 }
 

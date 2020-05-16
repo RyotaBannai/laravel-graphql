@@ -8,6 +8,33 @@ type Post {
     comments: [Comment!]! @morphMany
 }
 
+input CreatePostInput {
+    title: String!
+    content: String!
+    author: CreateUserBelongsTo
+}
+
+input CreateUserBelongsTo {
+    connect: ID
+    create: CreateUserInput
+    update: UpdateUserInput
+    upsert: UpsertUserInput
+}
+
+input CreateUserInput {
+    name: String!
+}
+
+input UpdateUserInput {
+    id: ID!
+    name: String!
+}
+
+input UpsertUserInput {
+    id: ID!
+    name: String!
+}
+
 extend type Query {
     posts: [Post!]! @all
     posts2: [Post!]! @paginate
@@ -15,4 +42,8 @@ extend type Query {
     postDense(
         title: String! @where(operator: "%LIKE%")
     ): [Post!]! @all
+}
+
+extend type Mutation {
+    createPost(input: CreatePostInput! @spread): Post @create
 }
