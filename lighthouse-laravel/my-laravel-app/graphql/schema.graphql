@@ -1,43 +1,16 @@
-"A date string with format `Y-m-d`, e.g. `2011-05-23`."
-scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+#   directive @upperCase on FIELD_DEFINITION
+#   directive @append(text: String) on FIELD_DEFINITION | ARGUMENT_DEFINITION
 
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
-
-"A datetime and timezone string in ISO 8601 format `Y-m-dTH:i:sO`, e.g. `2020-04-20T13:53:12+02:00`."
-scalar DateTimeTz @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeTz")
-
-scalar Email @scalar(class: "MLL\\GraphQLScalars\\Email")
-
-type Query {
-    users: [User!]! @paginate(defaultCount: 10)
-    user(id: ID @eq): User @find
-    posts: [Post!]! @all
-    post(id: Int! @eq): Post @find
-    hello: String!
-    # greet(name: String!): String
-    greet(name: String = "you"): String # withou ! makes variable is optional.
-}
-
-interface Named {
-    id: ID!
-    name: String!
-}
-
-type User implements Named {
-    id: ID!
-    name: String!
-    email: Email!
-    created_at: DateTime!
-    updated_at: DateTime!
-    posts: [Post!]! @hasMany
-    groups: [Group!]! @belongsToMany
-}
+#import query.graphql
+#import mutation.graphql
+#import user.graphql
+#import scalars.graphql
 
 type Post {
     id: ID!
     title: String!
     content: String!
+    category: String!
     #author: User! @belongsTo
     user: User! @belongsTo(relation: "author")  # accepts different method name
     comments: [Comment!]! @morphMany
@@ -52,16 +25,5 @@ type Comment {
 type Group {
     id: ID!
     name: String!
-}
-
-input CreateUserInput {
-    name: String!
-    email: Email!
-    password: String!
-    active: Boolean = 1 # default value in input type.
-}
-
-type Mutation {
-    createUser(input: CreateUserInput! @spread): User @create
 }
 

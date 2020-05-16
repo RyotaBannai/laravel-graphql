@@ -141,3 +141,25 @@ type User {
   mySpecialData: String! @method(name: "getMySpecialData")
 }
 ```
+### Eloquent
+- Pagination: You can leverage the `@paginate` directive to query a large list of models in chunks.
+```graphql
+type Query {
+  posts: [Post!]! @paginate
+}
+```
+- this automatically transformed to this:
+```graphql
+type Query {
+  posts(first: Int!, page: Int): PostPaginator
+}
+
+type PostPaginator {
+  data: [Post!]!
+  paginatorInfo: PaginatorInfo!
+}
+```
+### Schema Organisation
+- As you add more and more types to your schema, it can grow quite large. Learn how to split your schema across multiple files and organise your types.
+- Imports always begin on a separate line with `#import`, followed by `the relative path` to the imported file. The contents of other.graphql are pasted in the final schema.
+- The orders of importing files `won't cause any dependency problems` as long as you import all needed files!

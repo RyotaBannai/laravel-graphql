@@ -1,0 +1,64 @@
+query {
+#    posts2(first: 10){
+#    posts2(first: 10, page:2){
+#        ...PostPagenationPragment
+#        ...PostFragment
+#    }
+    users(first: 5){
+        ...UserPagenationPragment
+        ...UserFragment
+    }
+}
+
+fragment UserFragment on UserPaginator {
+    data{
+        id
+        name
+    }
+}
+
+fragment UserPagenationPragment on UserPaginator {
+    paginatorInfo{
+        currentPage
+        lastPage
+    }
+}
+
+
+#fragment PostFragment on PostPaginator {
+#    data{
+#        id
+#        content
+#        category
+#    }
+#}
+#
+#fragment PostPagenationPragment on PostPaginator {
+#    paginatorInfo{
+#        currentPage
+#        lastPage
+#    }
+#}
+
+#query{
+#    hello
+#    postDense(title: "but"){
+#        id
+#        content
+#        category
+#    }
+#}
+# come back later
+
+#mutation{
+#    createUser(
+#        input:{
+#            name: "ryota13",
+#            email: "ryota13@gmail.com",
+#            password: "testaccount",
+#        }
+#    )
+#    {
+#        id
+#    }
+#}

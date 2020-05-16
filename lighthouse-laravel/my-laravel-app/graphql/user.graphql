@@ -1,0 +1,21 @@
+interface Named {
+    id: ID!
+    name: String!
+}
+
+type User implements Named {
+    id: ID!
+    name: String!
+    email: Email!
+    created_at: DateTime!
+    updated_at: DateTime!
+    posts: [Post!]! @hasMany
+    groups: [Group!]! @belongsToMany
+}
+
+input CreateUserInput {
+    name: String!
+    email: Email!
+    password: String!
+    active: Boolean = 1 # default value in input type.
+}
