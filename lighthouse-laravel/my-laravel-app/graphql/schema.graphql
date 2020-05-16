@@ -14,6 +14,9 @@ type Query {
     user(id: ID @eq): User @find
     posts: [Post!]! @all
     post(id: Int! @eq): Post @find
+    hello: String!
+    # greet(name: String!): String
+    greet(name: String = "you"): String # withou ! makes variable is optional.
 }
 
 interface Named {
@@ -55,9 +58,10 @@ input CreateUserInput {
     name: String!
     email: Email!
     password: String!
-    active: Boolean
+    active: Boolean = 1 # default value in input type.
 }
 
 type Mutation {
     createUser(input: CreateUserInput! @spread): User @create
 }
+

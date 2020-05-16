@@ -47,6 +47,12 @@ type Mutation {
   deleteUser(id: ID): User
 }
 ```
+- If the name of the Eloquent model does not match the return type of the field, or is located in a non-default namespace, set it with the `model` argument.
+```graphql
+type Mutation {
+  createPost(title: String!): Post @create(model: "Foo\\Bar\\MyPost")
+}
+```
 - `Subscription`: Rather than providing a single response, the fields of the Subscription type return a stream of responses, with real-time updates. 
 ```graphql
 type Subscription {
@@ -69,3 +75,69 @@ composer require mll-lab/graphql-php-scalars
 - By using Enum... Queries now return `meaningful names instead of magic numbers`. (If the internal value of the enum is the same as the field name, @enum can be omitted)
 - The GraphQL `interface`: It defines `a set of common fields` that all implementing types must also provide. A common use-case for interfaces with a Laravel project would be `polymorphic relationships`. (an abstract type)
 - You can also provide a custom type resolver. Run `php artisan lighthouse:interface <Interface name>` to create a custom interface class
+
+### Field
+- _Every_ field has a function associated with it that is called when the field is requested as part of a query. This function is called a `resolver`.
+- By default, `Lighthouse` looks for a class with `the capitalized name of the field` in `App\GraphQL\Queries` or `App\GraphQL\Mutations` and calls its `__invoke` function with the usual resolver arguments.
+- to create resolver: 
+```shell script
+php artisan lighthouse:query Hello
+```
+- just as simple as put like 
+```graphql
+query{
+  hello
+}
+```
+- then the return to below will..
+```json
+{
+    "data": {
+        "hello": "world!"
+    }
+}
+```
+```graphql
+type Query {
+  user: User!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String
+}
+```
+- First graphql resolves the `User!` which is `App\Model\User`, then id and email (`the field sub-selection`) are resolved.
+- Conveniently, `the first argument of each resolver` is `the return value of the parent field`, in this case a User model.
+- A naive implementation of  a resolver for id might look like this:
+```php
+<?php
+
+use App\Models\User;
+
+function resolveUserId(User $user): string
+{
+    return $user->id;
+}
+```
+- but this can get repetitive as methods increase, so use fourth and fifth resolver argument(which will give us access to the requested field name, to dynamically access the matching property.) 
+```php
+<?php
+
+use App\Models\User;
+use GraphQL\Type\Definition\ResolveInfo;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+
+function resolveUserAttribute(User $user, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+{
+    return $user->{$resolveInfo->fieldName};
+}
+```
+- Fortunately, **the underlying GraphQL implementation already provides a sensible default resolver**, that plays quite nicely with the data you would typically return from a root resolver, e.g. Eloquent models or associative arrays. This means that in most cases, **you will only have to provide resolvers for the root fields** and make sure they return data in the proper shape.
+- If you need to implement custom resolvers for fields that `are not on one of the root types Query or Mutation`, you can use either the `@field` or `@method` directive. You may also **change the default resolver** if you need.
+```graphql
+type User {
+  mySpecialData: String! @method(name: "getMySpecialData")
+}
+```
