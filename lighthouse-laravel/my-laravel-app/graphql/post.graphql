@@ -4,6 +4,8 @@ type Post {
     title: String!
     content: String!
     category: String!
+    created_at: String
+    updated_at: String
     #author: User! @belongsTo
     user: User! @belongsTo(relation: "author")  # accepts different method name
     comments: [Comment!]! @morphMany
@@ -36,8 +38,10 @@ input UpsertUserInput {
     name: String!
 }
 
+
 extend type Query {
-    posts: [Post!]! @all
+    # posts: [Post!]! @all
+
     posts2: [Post!]! @paginate
     post(id: Int! @eq): Post @find
 }

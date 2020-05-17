@@ -2,5 +2,5 @@ type Query {
     hello: String!
     # hello: String @upperCase
     # greet(name: String!): String
-    greet(name: String = "you"): String # withou ! makes a variable optional.
+    greet(name: String = "you" @trim): String # withou ! makes a variable optional.
 }

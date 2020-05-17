@@ -15,7 +15,8 @@ type User implements Named {
 
 input CreateUserInputs {
     name: String!
-    email: Email!
+    # email: Email! # includes rules already
+    email: String @rules(apply: ["email"], messages: { email: "Invalid Email"})
     password: String!
     active: Boolean = true # default value in input type.
 }

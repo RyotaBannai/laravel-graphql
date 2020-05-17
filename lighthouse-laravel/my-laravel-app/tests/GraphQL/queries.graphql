@@ -1,12 +1,25 @@
-mutation{
-    createUser(
-        input: {
-            name: "ryota5",
-            email: "ryota5@gmail.com",
-            password: "saosijaoirjfe;ro",
+query multiQuerySample {
+    greet
+    postDense(title: "%Alice%")
+        {
+            id
+            title
+            content
         }
-    )
-    {
-        id
-    }
+
+    postDense3(hasComments: {
+            AND:[
+                {column: TARGET_TYPE , operator: EQ, value: "App\\Models\\Post"}
+                {column: DELETED_AT , operator: IS_NOT_NULL } # IS_NULL works as well.
+            ]
+        })
+        {
+            id
+            title
+            content
+            comments {
+                reply
+                deleted_at
+            }
+        }
 }
