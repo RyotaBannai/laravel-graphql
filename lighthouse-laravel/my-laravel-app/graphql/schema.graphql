@@ -7,6 +7,7 @@
 #import post.graphql
 #import postDense.graphql
 #import scalars.graphql
+#import file_upload.graphql
 
 type Comment {
     id: ID!
