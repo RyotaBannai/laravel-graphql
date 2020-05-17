@@ -15,7 +15,7 @@ type User implements Named {
 
 input CreateUserInputs {
     name: String!
-    email: String!
+    email: Email!
     password: String!
     active: Boolean = true # default value in input type.
 }

@@ -1,8 +1,8 @@
 mutation{
     createUser(
         input: {
-            name: "ryota4",
-            email: "ryota4@gmail.com",
+            name: "ryota5",
+            email: "ryota5@gmail.com",
             password: "saosijaoirjfe;ro",
         }
     )
