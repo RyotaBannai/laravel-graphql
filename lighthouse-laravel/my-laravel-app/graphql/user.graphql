@@ -13,11 +13,11 @@ type User implements Named {
     groups: [Group!]! @belongsToMany
 }
 
-input CreateUserInput {
+input CreateUserInputs {
     name: String!
-    email: Email!
+    email: String!
     password: String!
-    active: Boolean = 1 # default value in input type.
+    active: Boolean = true # default value in input type.
 }
 
 extend type Query {
@@ -27,4 +27,5 @@ extend type Query {
 
 extend type Mutation {
     updateUser(id: ID!, name: String): User @update
+    createUser(input: CreateUserInputs! @spread): User @create
 }
